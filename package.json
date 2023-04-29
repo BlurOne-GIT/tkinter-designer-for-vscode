@@ -1,0 +1,67 @@
+{
+  "name": "tkinter-designer-for-vscode",
+  "displayName": "Tkinter Designer for VsCode",
+  "description": "An extension that integrates ParthJadhav's Tkinter Designer into Visual Studio Code to replicate the Windows Forms or WPF in Visual Studio form of programming a visual interface.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.77.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "tkinter-designer-for-vscode.titWorld",
+        "title": "Hello Tits"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "tkinter-designer-generator",
+          "title": "Tkinter Designer",
+          "icon": "media/uglyass.svg"
+        }
+      ]
+    },
+    "views": {
+      "tkinter-designer-generator": [
+        {
+          "id": "generator-settings",
+          "name": "Generator",
+          "icon": "media/uglyass.svg",
+          "contextualTitle": "Tkinter Designer Generator"
+        },
+        {
+          "id": "element-events",
+          "name": "Element Events",
+          "contextualTitle": "Tkinter Designer Event Manager"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.77.0",
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^5.59.1",
+    "@typescript-eslint/parser": "^5.59.1",
+    "eslint": "^8.39.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0",
+    "typescript": "^5.0.4",
+    "@vscode/test-electron": "^2.3.0"
+  }
+}
