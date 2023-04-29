@@ -12,12 +12,6 @@
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "tkinter-designer-for-vscode.titWorld",
-        "title": "Hello Tits"
-      }
-    ],
     "viewsContainers": {
       "activitybar": [
         {
@@ -41,7 +35,14 @@
           "contextualTitle": "Tkinter Designer Event Manager"
         }
       ]
-    }
+    },
+    "viewsWelcome": [
+      {
+        "view": "generator-settings",
+        "contents": "Not logged in to Figma.\n[Log in](command:tkinter-designer-for-vscode.titWorld)",
+        "when": "isLoggedIn == false"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
