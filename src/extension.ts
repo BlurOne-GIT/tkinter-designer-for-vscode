@@ -26,6 +26,8 @@ export function activate(context: vscode.ExtensionContext) {
 		isLoggedIn = true;
 	});
 
+	vscode.window.registerWebviewViewProvider('generator-settings', new GenSetViewProvider());
+
 	context.subscriptions.push(disposable);
 }
 
@@ -33,3 +35,22 @@ export function activate(context: vscode.ExtensionContext) {
 export function deactivate() {}
 
 export var isLoggedIn: boolean = false;
+
+export class GenSetViewProvider implements WebviewViewProvider
+{
+	resolveWebviewView(webviewView: vscode.WebviewView, context: vscode.WebviewViewResolveContext<unknown>, token: vscode.CancellationToken): void | Thenable<void> {
+		webviewView.webview.html =
+		`<!DOCTYPE html>
+		<html lang="en">
+		<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		</head>
+		<body>
+			<span>File link:</span>
+			<input type="text">
+		</body>
+		</html>`;
+	}
+	
+}

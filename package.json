@@ -27,12 +27,14 @@
           "id": "generator-settings",
           "name": "Generator",
           "icon": "media/uglyass.svg",
-          "contextualTitle": "Tkinter Designer Generator"
+          "contextualTitle": "Tkinter Designer Generator",
+          "type": "webview"
         },
         {
           "id": "element-events",
           "name": "Element Events",
-          "contextualTitle": "Tkinter Designer Event Manager"
+          "contextualTitle": "Tkinter Designer Event Manager",
+          "type": "tree"
         }
       ]
     },
@@ -40,7 +42,7 @@
       {
         "view": "generator-settings",
         "contents": "Not logged in to Figma.\n[Log in](command:tkinter-designer-for-vscode.titWorld)",
-        "when": "isLoggedIn == false"
+        "when": "!isLoggedIn"
       }
     ]
   },
