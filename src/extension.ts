@@ -23,34 +23,12 @@ export function activate(context: vscode.ExtensionContext) {
 		// The code you place here will be executed every time your command is executed
 		// Display a message box to the user
 		vscode.window.showInformationMessage('I fucking love tits');
-		isLoggedIn = true;
 	});
 
-	vscode.window.registerWebviewViewProvider('generator-settings', new GenSetViewProvider());
+	//vscode.window.registerWebviewViewProvider('generator-settings', new GenSetViewProvider());
 
 	context.subscriptions.push(disposable);
 }
 
 // This method is called when your extension is deactivated
 export function deactivate() {}
-
-export var isLoggedIn: boolean = false;
-
-export class GenSetViewProvider implements WebviewViewProvider
-{
-	resolveWebviewView(webviewView: vscode.WebviewView, context: vscode.WebviewViewResolveContext<unknown>, token: vscode.CancellationToken): void | Thenable<void> {
-		webviewView.webview.html =
-		`<!DOCTYPE html>
-		<html lang="en">
-		<head>
-			<meta charset="UTF-8">
-			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		</head>
-		<body>
-			<span>File link:</span>
-			<input type="text">
-		</body>
-		</html>`;
-	}
-	
-}
