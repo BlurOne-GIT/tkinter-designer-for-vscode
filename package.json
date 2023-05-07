@@ -1,5 +1,6 @@
 {
   "name": "tkinter-designer-for-vscode",
+  "publisher": "blurone",
   "displayName": "Tkinter Designer for VsCode",
   "description": "An extension that integrates ParthJadhav's Tkinter Designer into Visual Studio Code to replicate the Windows Forms or WPF in Visual Studio form of programming a visual interface.",
   "version": "0.0.1",
@@ -12,6 +13,12 @@
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
+    "commands":[
+      {
+        "title": "Log in with Figma",
+        "command": "tkinter-designer-for-vscode.signIn"
+      }
+    ],
     "viewsContainers": {
       "activitybar": [
         {
@@ -24,14 +31,13 @@
     "views": {
       "tkinter-designer-generator": [
         {
-          "id": "generator-settings",
+          "id": "generatorSettings",
           "name": "Generator",
           "icon": "media/uglyass.svg",
-          "contextualTitle": "Tkinter Designer Generator",
-          "type": "webview"
+          "contextualTitle": "Tkinter Designer Generator"
         },
         {
-          "id": "element-events",
+          "id": "elementEvents",
           "name": "Element Events",
           "contextualTitle": "Tkinter Designer Event Manager",
           "type": "tree"
@@ -40,8 +46,8 @@
     },
     "viewsWelcome": [
       {
-        "view": "generator-settings",
-        "contents": "Not logged in to Figma.\n[Log in](command:tkinter-designer-for-vscode.titWorld)",
+        "view": "generatorSettings",
+        "contents": "Not logged in to Figma.\n[Log in](command:tkinter-designer-for-vscode.signIn)",
         "when": "!isLoggedIn"
       }
     ]
@@ -55,16 +61,22 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.77.0",
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
+    "@types/node-fetch": "^2.6.3",
+    "@types/uuid": "^9.0.1",
+    "@types/vscode": "^1.77.0",
     "@typescript-eslint/eslint-plugin": "^5.59.1",
     "@typescript-eslint/parser": "^5.59.1",
+    "@vscode/test-electron": "^2.3.0",
     "eslint": "^8.39.0",
     "glob": "^8.1.0",
     "mocha": "^10.2.0",
-    "typescript": "^5.0.4",
-    "@vscode/test-electron": "^2.3.0"
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.9",
+    "uuid": "^9.0.0"
   }
 }

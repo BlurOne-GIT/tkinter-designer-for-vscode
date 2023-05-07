@@ -42,3 +42,5 @@ export function deactivate() {}
 const getFigmaSession = async () => {
 	const session = await vscode.authentication.getSession("Figma", ['profile'], { createIfNone: false });
 };
+
+export const isLoggedIn: Boolean = vscode.authentication.getSession("Figma", ['profile'], { createIfNone: false }) !== undefined;

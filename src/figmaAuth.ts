@@ -1,11 +1,12 @@
 import { authentication, AuthenticationProvider, AuthenticationProviderAuthenticationSessionsChangeEvent, AuthenticationSession, Disposable, Event, EventEmitter, ExtensionContext, window, Uri, env, ProgressLocation, UriHandler } from "vscode";
 import { v4 as uuid } from "uuid";
 import { PromiseAdapter, promiseFromEvent } from "./util";
-import fetch from "node-fetch";
+import fetch from 'node-fetch';
 
 export const AUTH_TYPE = `Figma`;
 const AUTH_NAME = `Figma`;
 const CLIENT_ID = `3K4ECYxfzWBIEx3yzo5Yyz`;
+const CLIENT_SECRET = `qLKFLFGvVU9vuE50y1YmlcHdV6lY6F`;
 const FIGMA_DOMAIN = `www.figma.com`;
 const SESSIONS_SECRET_KEY = `${AUTH_TYPE}.sessions`;
 
@@ -20,7 +21,7 @@ export class FigmaAuthenticationProvider implements AuthenticationProvider, Disp
 {
     private _sessionChangeEmitter = new EventEmitter<AuthenticationProviderAuthenticationSessionsChangeEvent>();
     private _disposable: Disposable;
-	private _pendingStates: string[] = [];
+	  private _pendingStates: string[] = [];
   	private _codeExchangePromises = new Map<string, { promise: Promise<string>; cancel: EventEmitter<void> }>();
   	private _uriHandler = new UriEventHandler();
 
@@ -37,34 +38,53 @@ export class FigmaAuthenticationProvider implements AuthenticationProvider, Disp
      * @returns 
      */
   	private handleUri: (scopes: readonly string[]) => PromiseAdapter<Uri, string> = 
-  	(scopes) => async (uri: any, resolve: any, reject: any) => {
-    	const query = new URLSearchParams(uri.fragment);
-    	const accessToken = query.get('access_token');
+  	(scopes) => async (uri: Uri, resolve: any, reject: any) => {
+      window.showInformationMessage(uri.toString());
+    	const query = new URLSearchParams(uri.query);
+    	const code = query.get('code');
     	const state = query.get('state');
+      window.showInformationMessage(query.toString());
 
-		if (!accessToken) {
-		reject(new Error('No token'));
-		return;
-		}
-		if (!state) {
-		reject(new Error('No state'));
-		return;
-		}
+      if (!code) {
+      reject(new Error('No token'));
+      return;
+      }
+      if (!state) {
+      reject(new Error('No state'));
+      return;
+      }
 
-		// Check if it is a valid auth request started by the extension
-		if (!this._pendingStates.some(n => n === state)) {
-		reject(new Error('State not found'));
-		return;
-		}
+      // Check if it is a valid auth request started by the extension
+      if (!this._pendingStates.some(n => n === state)) {
+      reject(new Error('State not found'));
+      return;
+      }
 
-		resolve(accessToken);
-	};
+      const searchParams = new URLSearchParams([
+        ['client_id', CLIENT_ID],
+        ['client_secret',   CLIENT_SECRET],
+        ['redirect_uri', this.redirectUri],
+        ['code', code],
+        ['grant_type', 'authorization_code']
+      ]);
 
-	get redirectUri() {
-		const publisher = this.context.extension.packageJSON.publisher;
-		const name = this.context.extension.packageJSON.name;
-		return `${env.uriScheme}://${publisher}.${name}`;
-	}
+      const response = await fetch(`https://${FIGMA_DOMAIN}/api/oauth/token?${searchParams.toString()}`, { method: 'POST' }); //.json() as unknown as { access_token: string, expires_in: number, refresh_token: string};
+      const json = await response.json();
+      const realresponseorwhatever: { access_token: string, expires_in: number, refresh_token: string} = json as { access_token: string, expires_in: number, refresh_token: string};
+
+      window.showInformationMessage(response.toString());
+      window.showInformationMessage(json.toString());
+      window.showInformationMessage(realresponseorwhatever.toString());
+      window.showInformationMessage(realresponseorwhatever.access_token);
+
+      resolve(realresponseorwhatever.access_token);
+    };
+
+    get redirectUri() {
+      const publisher = this.context.extension.packageJSON.publisher;
+      const name = this.context.extension.packageJSON.name;
+      return `${env.uriScheme}://${publisher}.${name}`;
+    }
 
     onDidChangeSessions: Event<AuthenticationProviderAuthenticationSessionsChangeEvent> = this._sessionChangeEmitter.event;
     
