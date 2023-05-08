@@ -25,12 +25,40 @@ export async function activate(context: vscode.ExtensionContext) {
 		console.log(session);
 	});
 
+
+
 	//vscode.window.registerWebviewViewProvider('generator-settings', new GenSetViewProvider());
 
 	context.subscriptions.push(disposable);
 
 	context.subscriptions.push(
 		new FigmaAuthenticationProvider(context)
+	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('tkinter-designer-for-vscode.openWebview', () => {
+			const panel = vscode.window.createWebviewPanel(
+				'figmaWebview',
+				'Figma',
+				vscode.ViewColumn.One,
+				{}
+			);
+		
+			// Set the webview HTML content
+			panel.webview.html = `
+				<!DOCTYPE html>
+				<html>
+					<head>
+						<meta charset="UTF-8">
+						<meta name="viewport" content="width=device-width, initial-scale=1.0">
+						<title>Figma</title>
+					</head>
+					<body>
+						<iframe src="https://www.figma.com" style="width: 100%; height: 100%; border: none;"></iframe>
+					</body>
+				</html>
+			`;
+		})
 	);
 
 	
@@ -43,4 +71,7 @@ const getFigmaSession = async () => {
 	const session = await vscode.authentication.getSession("Figma", ['profile'], { createIfNone: false });
 };
 
-export const isLoggedIn: Boolean = vscode.authentication.getSession("Figma", ['profile'], { createIfNone: false }) !== undefined;
+export async function isLoggedIn() {
+	const session = await vscode.authentication.getSession("Figma", ['profile'], { createIfNone: false });
+	return session !== undefined;
+}

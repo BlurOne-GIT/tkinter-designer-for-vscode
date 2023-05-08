@@ -17,6 +17,10 @@
       {
         "title": "Log in with Figma",
         "command": "tkinter-designer-for-vscode.signIn"
+      },
+      {
+        "title": "Open Figma Webview",
+        "command": "tkinter-designer-for-vscode.openWebview"
       }
     ],
     "viewsContainers": {
@@ -49,6 +53,11 @@
         "view": "generatorSettings",
         "contents": "Not logged in to Figma.\n[Log in](command:tkinter-designer-for-vscode.signIn)",
         "when": "!isLoggedIn"
+      },
+      {
+        "view": "generatorSettings",
+        "contents": "Logged in to Figma.\nDue to API limitations, you have to get the link to the file you want to convert.\n[Convert file to TKinter]\n[Log out](command:tkinter-designer-for-vscode.signOut)",
+        "when": "isLoggedIn"
       }
     ]
   },
